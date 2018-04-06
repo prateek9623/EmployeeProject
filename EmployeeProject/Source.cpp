@@ -1,14 +1,20 @@
 #include"SalesMgr.h"
+#include"LinkedList.h"
 using namespace std;
 
-char fileLoc[] = "database.txt";
-vector <Employee*> emp;
-fstream fileIO;
+char SalesMgrDB[] = "SalesMgr.txt";
+char ProgrammerDB[] = "Programmer.txt";
+char AdminDB[] = "Admin.txt";
+LinkedList <Employee*> emp;
+fstream fileIO1;
+fstream fileIO2;
+fstream fileIO3;
+
 
 int main();
 
-//void getFileData();
-//void setFileData();
+void getFileData();
+void setFileData();
 bool insertRecord(int);
 bool deleteRecord(char[]);
 bool searchRecord(char[]);
@@ -22,13 +28,13 @@ void empListDeleter();
 
 int main()
 {
+	//getFileData();
 	int ch;
 	int type;
 	do
 	{
-	/*	empListDeleter();
-		getFileData();
-	*/	cout << endl << "---------- - MENU------------\n" << endl;
+		//empListDeleter();
+		cout << endl << "---------- - MENU------------\n" << endl;
 		cout << "1.	Insert Record (Admin / Programmer / SalesMgr)" << endl;
 		cout << "2.	Delete Record" << endl;
 		cout << "3.	Search Employee" << endl;
@@ -109,12 +115,12 @@ int main()
 			sortDatabyType();
 			break;
 		case 10:
+			//setFileData();
 			break;
 		default:
 			cout << "Invalid Choice!!!";
 
 		}
-		//setFileData();
 	} while (ch != 10);
 
 }
@@ -157,21 +163,20 @@ bool insertRecord(int classType)
 	}
 	else
 		return false;
-	emp.push_back(temp);
+	emp.insert(temp);
 	//file.open(fileloc, ios::binary);
 	return true;
 }
 bool deleteRecord(char empid[]) {
-	for (int i = 0; i < emp.size(); i++) {
+	for (int i = 0; i < emp.getSize(); i++) {
 		if (strcmp(emp[i]->getId(), empid) == 0) {
-			emp.erase(emp.begin() + i);
-			return true;
+			return emp.remove(i);;
 		}
 	}
 	return false;
 }
 bool searchRecord(char empid[]) {
-	for (int i = 0; i < emp.size(); i++) {
+	for (int i = 0; i < emp.getSize(); i++) {
 		if (strcmp(emp[i]->getId(), empid) == 0) {
 			return true;
 		}
@@ -179,20 +184,20 @@ bool searchRecord(char empid[]) {
 	return false;
 }
 void displayAll() {
-	for (int i = 0; i < emp.size(); i++) {
+	for (int i = 0; i < emp.getSize(); i++) {
 		emp[i]->display();
 	}
 }
 void display(int type)
 {
-	for (int i = 0; i < emp.size(); i++) {
+	for (int i = 0; i < emp.getSize(); i++) {
 		emp[i]->display();
 		cout << endl;
 	}
 }
 bool update(char empid[])
 {
-	for (int i = 0; i < emp.size(); i++) {
+	for (int i = 0; i < emp.getSize(); i++) {
 		if (strcmp(emp[i]->getId(), empid) == 0)
 		{
 			emp[i]->update();
@@ -203,8 +208,8 @@ bool update(char empid[])
 }
 void sortDatabyId()
 {
-	for (int i = 0; i < emp.size(); i++) {
-		for (int j = i + 1; j < emp.size(); j++) {
+	for (int i = 0; i < emp.getSize(); i++) {
+		for (int j = i + 1; j < emp.getSize(); j++) {
 			if (strcmp(emp[i]->getId(), emp[j]->getId()) > 0)
 				swap(emp[i], emp[j]);
 		}
@@ -212,8 +217,8 @@ void sortDatabyId()
 }
 void sortDatabyName()
 {
-	for (int i = 0; i < emp.size(); i++) {
-		for (int j = i + 1; j < emp.size(); j++) {
+	for (int i = 0; i < emp.getSize(); i++) {
+		for (int j = i + 1; j < emp.getSize(); j++) {
 			if (strcmp(emp[i]->getName(), emp[j]->getName()) > 0)
 				swap(emp[i], emp[j]);
 		}
@@ -221,8 +226,8 @@ void sortDatabyName()
 }
 void sortDatabyType()
 {
-	for (int i = 0; i < emp.size(); i++) {
-		for (int j = i + 1; j < emp.size(); j++) {
+	for (int i = 0; i < emp.getSize(); i++) {
+		for (int j = i + 1; j < emp.getSize(); j++) {
 			if ((typeid(*emp[i]) == typeid(Programmer) && typeid(*emp[j]) == typeid(Admin)) || (typeid(*emp[i]) == typeid(SalesMgr) && typeid(*emp[j]) == typeid(Admin)))
 				swap(emp[i], emp[j]);
 			else if (typeid(*emp[i]) == typeid(SalesMgr) && typeid(*emp[j]) == typeid(Programmer))
@@ -233,34 +238,82 @@ void sortDatabyType()
 
 void empListDeleter()
 {
-	for (int i = 0; i < emp.size(); i++)
-		delete emp[i];
-
-	emp.clear();
+	emp.deleteList();
 }
 
-//void getFileData()
-//{
-//	fileIO.open(fileLoc, ios::in|ios::binary);
-//	while (!fileIO.eof())
-//	{
-//		Employee *e;
-//		fileIO.read((char*)e, sizeof(Employee));
-//	}
-//	fileIO.close();
-//}
-//
-//void setFileData()
-//{
-//	fileIO.open(fileLoc, ios::out|ios::trunc|ios::binary);
-//	for (int i = 0; i <emp.size(); i++)
-//	{
-//		if(strcmp("class Programmer",typeid(*emp[i]).name())==0)
-//			fileIO.write((char*)emp[i], sizeof(Programmer));
-//		else if (strcmp("class Admin", typeid(*emp[i]).name()) == 0)
-//			fileIO.write((char*)emp[i], sizeof(Admin));
-//		else if (strcmp("class SalesMgr", typeid(*emp[i]).name()) == 0)
-//			fileIO.write((char*)emp[i], sizeof(SalesMgr));
-//	}
-//	fileIO.close();
-//}
+void getFileData()
+{
+	fileIO1.open(SalesMgrDB, ios::in|ios::binary);
+	if (fileIO1.is_open())
+	{
+		while (!fileIO1.eof())
+		{
+			SalesMgr temp;
+			fileIO1.read((char*)&temp, sizeof(SalesMgr));
+			Employee *emp1 = &temp;
+			emp.insert(emp1);
+		}
+		fileIO1.close();
+	}
+	fileIO2.open(ProgrammerDB, ios::in | ios::binary);
+	if (fileIO2.is_open())
+	{
+		while (!fileIO2.eof())
+		{
+			Programmer temp;
+			fileIO2.read((char*)&temp, sizeof(Programmer));
+			Employee *emp1 = &temp;
+			emp.insert(emp1);
+		}
+		fileIO2.close();
+	}
+	fileIO3.open(AdminDB, ios::in | ios::binary);
+	if (fileIO3.is_open())
+	{
+		while (!fileIO3.eof())
+		{
+			Admin temp;
+			fileIO3.read((char*)&temp, sizeof(Admin));
+			Employee *emp1 = &temp;
+			emp.insert(emp1);
+		}
+		fileIO3.close();
+	}
+}
+
+void setFileData()
+{
+	for (int i = 0; i <emp.getSize(); i++)
+	{
+		if (typeid(*emp[i]) == typeid(Programmer))
+		{
+			if (!fileIO1.is_open()) {
+				fileIO1.open(ProgrammerDB, ios::out | ios::trunc | ios::binary);
+			}
+			fileIO1.write((char*)emp[i], sizeof(Programmer));
+		}
+		else if (typeid(*emp[i]) == typeid(Admin))
+		{
+			if(!fileIO2.is_open()) {
+				fileIO2.open(AdminDB, ios::out | ios::trunc | ios::binary);
+			}
+			fileIO2.write((char*)emp[i], sizeof(Admin));
+		}
+		else if (typeid(*emp[i]) == typeid(SalesMgr))
+		{
+			if (!fileIO3.is_open()) {
+				fileIO3.open(SalesMgrDB, ios::out | ios::trunc | ios::binary);
+			}
+			fileIO3.write((char*)emp[i], sizeof(SalesMgr));
+		}
+	}
+	if (fileIO1) {
+		fileIO1.close();
+	}
+	if (fileIO2) {
+		fileIO2.close();
+	}
+	if (fileIO3) {
+		fileIO3.close();
+	}
+}

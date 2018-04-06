@@ -1,6 +1,10 @@
 #include "SalesMgr.h"
 
 
+SalesMgr::SalesMgr():Employee()
+{
+}
+
 SalesMgr::SalesMgr(const char* id, double basic,const char *name, const char *addr, int sales, double commision) :Employee(id, basic, name, addr)
 {
 	mSales = sales;

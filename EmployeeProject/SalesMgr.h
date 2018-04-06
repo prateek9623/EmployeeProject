@@ -7,6 +7,7 @@ class SalesMgr :
 	double mCommision;
 	int mSales=0;
 public:
+	SalesMgr();
 	//Base:const char id, double basic, char *name, char *addr Derived: int target, double commision
 	SalesMgr(const char*, double, const char *, const char *, int, double);
 	void setCommision(double);

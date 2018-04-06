@@ -8,7 +8,7 @@ class Employee
 	string mAddress;
 public:
 	Employee(const char*, double, const char *, const char *);
-
+	Employee();
 	const char* getId();
 
 	void setBasic(double);

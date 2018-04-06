@@ -7,6 +7,7 @@ public:
 public:
 	//base::long id, double basic, const char *name, const char *add derived:: double incentive.
 	Admin(const char*, double, const char *, const char *, double);
+	Admin() :Employee() {}
 	void update();
 	void setIncentive(double);
 	double getIncentive();

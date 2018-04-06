@@ -6,6 +6,10 @@ Programmer::Programmer(const char* id, double basic, const char *name,const char
 	mCostPerHrs = cph;
 }
 
+Programmer::Programmer():Employee()
+{
+}
+
 void Programmer::update()
 {
 	Employee::update();
@@ -38,7 +42,7 @@ double Programmer::getCostPerHrs()
 
 void Programmer::display()
 {
-	Employee:display();
+	Employee::display();
 	cout << "Extra hrs done: " << getExHrs() << endl;
 	cout << "Salary: " << calSal();
 }

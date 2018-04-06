@@ -8,6 +8,7 @@ class Programmer :
 public:
 	//base::const id, double basic, const char *name, const char *add derived:: int extraHrs, double costPerHrs.
 	Programmer(const char*, double, const char *, const char *, int, double);
+	Programmer();
 	void update();
 	void setExHrs(int);
 	void setCostPerHrs(int);

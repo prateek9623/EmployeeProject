@@ -126,6 +126,7 @@
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Employee.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Programmer.h" />
     <ClInclude Include="SalesMgr.h" />
   </ItemGroup>

@@ -8,6 +8,10 @@ Employee::Employee(const char* id, double basic, const char *name, const char *a
 	mAddress = addr;
 }
 
+Employee::Employee()
+{
+}
+
 void Employee::setBasic(double basic)
 {
 	mBasic = basic;
