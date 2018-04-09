@@ -2,19 +2,19 @@
 #include"LinkedList.h"
 using namespace std;
 
-char SalesMgrDB[] = "SalesMgr.txt";
-char ProgrammerDB[] = "Programmer.txt";
-char AdminDB[] = "Admin.txt";
+char SalesMgrDB[] = "SalesMgr.dat";
+char ProgrammerDB[] = "Programmer.dat";
+char AdminDB[] = "Admin.dat";
+char EmpCountDB[] = "EmpCount.txt";
 LinkedList <Employee*> emp;
 fstream fileIO1;
 fstream fileIO2;
 fstream fileIO3;
 
 
-int main();
 
-void getFileData();
-void setFileData();
+//void getFileData();
+//void setFileData();
 bool insertRecord(int);
 bool deleteRecord(char[]);
 bool searchRecord(char[]);
@@ -186,6 +186,7 @@ bool searchRecord(char empid[]) {
 void displayAll() {
 	for (int i = 0; i < emp.getSize(); i++) {
 		emp[i]->display();
+		cout << endl;
 	}
 }
 void display(int type)
@@ -240,80 +241,91 @@ void empListDeleter()
 {
 	emp.deleteList();
 }
-
-void getFileData()
-{
-	fileIO1.open(SalesMgrDB, ios::in|ios::binary);
-	if (fileIO1.is_open())
-	{
-		while (!fileIO1.eof())
-		{
-			SalesMgr temp;
-			fileIO1.read((char*)&temp, sizeof(SalesMgr));
-			Employee *emp1 = &temp;
-			emp.insert(emp1);
-		}
-		fileIO1.close();
-	}
-	fileIO2.open(ProgrammerDB, ios::in | ios::binary);
-	if (fileIO2.is_open())
-	{
-		while (!fileIO2.eof())
-		{
-			Programmer temp;
-			fileIO2.read((char*)&temp, sizeof(Programmer));
-			Employee *emp1 = &temp;
-			emp.insert(emp1);
-		}
-		fileIO2.close();
-	}
-	fileIO3.open(AdminDB, ios::in | ios::binary);
-	if (fileIO3.is_open())
-	{
-		while (!fileIO3.eof())
-		{
-			Admin temp;
-			fileIO3.read((char*)&temp, sizeof(Admin));
-			Employee *emp1 = &temp;
-			emp.insert(emp1);
-		}
-		fileIO3.close();
-	}
-}
-
-void setFileData()
-{
-	for (int i = 0; i <emp.getSize(); i++)
-	{
-		if (typeid(*emp[i]) == typeid(Programmer))
-		{
-			if (!fileIO1.is_open()) {
-				fileIO1.open(ProgrammerDB, ios::out | ios::trunc | ios::binary);
-			}
-			fileIO1.write((char*)emp[i], sizeof(Programmer));
-		}
-		else if (typeid(*emp[i]) == typeid(Admin))
-		{
-			if(!fileIO2.is_open()) {
-				fileIO2.open(AdminDB, ios::out | ios::trunc | ios::binary);
-			}
-			fileIO2.write((char*)emp[i], sizeof(Admin));
-		}
-		else if (typeid(*emp[i]) == typeid(SalesMgr))
-		{
-			if (!fileIO3.is_open()) {
-				fileIO3.open(SalesMgrDB, ios::out | ios::trunc | ios::binary);
-			}
-			fileIO3.write((char*)emp[i], sizeof(SalesMgr));
-		}
-	}
-	if (fileIO1) {
-		fileIO1.close();
-	}
-	if (fileIO2) {
-		fileIO2.close();
-	}
-	if (fileIO3) {
-		fileIO3.close();
-	}
-}
+//
+//void getFileData()
+//{
+//	int salesMgrCount = 0;
+//	int programmerCount = 0;
+//	int adminCount = 0;
+//	ifstream fileIO4;
+//	fileIO4.open(EmpCountDB);
+//	fileIO4 >> salesMgrCount >>programmerCount >>adminCount;
+//	fileIO4.close();
+//	fileIO1.open(SalesMgrDB, ios::in);
+//	if (fileIO1.is_open())
+//	{
+//		SalesMgr *temp = new SalesMgr;
+//		int count = 0;
+//		//while (fileIO1.read((char*)temp, sizeof(SalesMgr))&&count<salesMgrCount)
+//		{
+//			//fileIO1.read((char*)temp, sizeof(SalesMgr));
+//			emp.insert(temp);
+//			count++;
+//		}
+//		fileIO1.close();
+//	}
+//	fileIO2.open(ProgrammerDB, ios::in | ios::binary);
+//	if (fileIO2.is_open())
+//	{
+//		Programmer *temp = new Programmer;
+//		int count = 0;
+//		//while (fileIO2.read((char*)temp, sizeof(Programmer)) && count < programmerCount)
+//		{
+//			//fileIO2.read((char*)temp, sizeof(Programmer));
+//			emp.insert(temp);
+//			count++;
+//		}
+//		fileIO2.close();
+//	}
+//	fileIO3.open(AdminDB, ios::in | ios::binary);
+//	if (fileIO3.is_open())
+//	{
+//		Admin *temp = new Admin;
+//		int count = 0;
+//		//while (fileIO3.read((char*)temp, sizeof(Admin))&& count < adminCount)
+//		{
+//			//fileIO3.read((char*)temp, sizeof(Admin));
+//			emp.insert(temp);
+//			count++;
+//		}
+//		fileIO3.close();
+//	}
+//}
+//
+//void setFileData()
+//{
+//	int salesMgrCount = 0;
+//	int programmerCount = 0;
+//	int adminCount = 0;
+//	remove(ProgrammerDB);
+//	remove(SalesMgrDB);
+//	remove(AdminDB);
+//	for (int i = 0; i <emp.getSize(); i++)
+//	{
+//		if (typeid(*emp[i]) == typeid(Programmer))
+//		{
+//			fileIO1.open(ProgrammerDB, ios::out | ios::app);
+//			fileIO1.write((char*)emp[i], sizeof(Programmer));
+//			fileIO1.close();
+//			programmerCount++;
+//		}
+//		else if (typeid(*emp[i]) == typeid(Admin))
+//		{
+//			fileIO2.open(AdminDB, ios::out | ios::app);
+//			fileIO2.write((char*)emp[i], sizeof(Admin));
+//			fileIO2.close();
+//			adminCount++;
+//		}
+//		else if (typeid(*emp[i]) == typeid(SalesMgr))
+//		{
+//			fileIO3.open(SalesMgrDB, ios::out | ios::app);
+//			fileIO3.write((char*)emp[i], sizeof(SalesMgr));
+//			fileIO3.close();
+//			salesMgrCount++;
+//		}
+//	}
+//	ofstream fileIO4;
+//	fileIO4.open(EmpCountDB);
+//	fileIO4 << salesMgrCount <<endl<< programmerCount << endl << adminCount;
+//	fileIO4.close();
+//}

@@ -25,6 +25,9 @@ public:
 	double virtual calSal() = 0;
 	void virtual update() = 0;
 	
+	bool virtual writeToFile(ostream&)=0;
+	bool virtual readFromFile(istream&) = 0;
+
 	/*void virtual setincentive(double) {};
 	double virtual getincentive() { return 0.0; }
 	int virtual  getexhrs() { return 0; }
@@ -36,5 +39,11 @@ public:
 	void virtual setcommision(double) {};
 	void virtual setsales(int) {};
 */
+
 	~Employee();
+
+	protected:
+
+		void setId( string );
+	
 };

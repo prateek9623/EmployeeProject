@@ -44,7 +44,7 @@ void Programmer::display()
 {
 	Employee::display();
 	cout << "Extra hrs done: " << getExHrs() << endl;
-	cout << "Salary: " << calSal();
+	cout << "Salary: " << calSal()<<endl;
 }
 
 double Programmer::calSal()
@@ -52,6 +52,41 @@ double Programmer::calSal()
 	return getBasic()+mExtraHrs*mCostPerHrs;
 }
 
+//bool Programmer::writeToFile(ostream& out)
+//{
+//	try{
+//		out << getId() << endl;
+//		out << getName() << endl;
+//		out << getBasic() << endl;
+//		out << getAddr() << endl;
+//		out << mCostPerHrs << endl;
+//		out << mExtraHrs << endl;
+//		return true;
+//	}
+//	catch (ifstream::failure e) {
+//		return false;
+//	}
+//
+//}
+//
+//bool Programmer::readFromFile(istream &in)
+//{
+//	try {
+//		string mEid;
+//		double mBasic;
+//		string mName;
+//		string mAddress;
+//		in >> mEid >> mBasic >> mName >> mAddress>>mCostPerHrs>>mExtraHrs;
+//		setId(mEid);
+//		setBasic(mBasic);
+//		setName(mName.c_str());
+//		setAddr(mAddress.c_str());
+//		return true;
+//	} catch (ifstream::failure e) {
+//		return false;
+//	}
+//}
+//
 
 
 Programmer::~Programmer()

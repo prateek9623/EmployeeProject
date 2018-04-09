@@ -62,6 +62,37 @@ void Employee::update()
 	setAddr(empaddr);
 	setBasic(basic);
 }
+
+bool Employee::writeToFile(ostream &out)
+{
+	try {
+		out << mEid << endl;
+		out << mName << endl;
+		out << mAddress << endl;
+		out << mBasic << endl;
+		return true;
+	}
+	catch (ostream::failure e) {
+		return false;
+	}
+}
+
+bool Employee::readFromFile(istream &in)
+{
+	try {
+		getline(in, mEid);.
+		return true;
+	}
+	catch (ostream::failure e) {
+		return false;
+	}
+}
+
 Employee::~Employee()
 {
+}
+
+void Employee::setId(string id)
+{
+	mEid = id;
 }

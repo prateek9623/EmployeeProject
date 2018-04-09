@@ -31,6 +31,7 @@ public:
 		return mData;
 	}
 	virtual ~Node() {
+		delete mData;
 	}
 
 };

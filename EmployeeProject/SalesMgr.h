@@ -17,5 +17,9 @@ public:
 	void display();
 	double calSal();
 	void update();
+
+	//bool virtual writeToFile(ostream);
+	//bool virtual readFromFile(istream);
+	
 	~SalesMgr();
 };

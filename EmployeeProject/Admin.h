@@ -13,5 +13,7 @@ public:
 	double getIncentive();
 	void display();
 	double calSal();
+	//bool virtual writeToFile(ostream&);
+	//bool virtual readFromFile(istream&);
 	~Admin();
 };

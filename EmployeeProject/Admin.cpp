@@ -37,3 +37,4 @@ double Admin::calSal()
 Admin::~Admin()
 {
 }
+
