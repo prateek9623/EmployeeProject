@@ -2,7 +2,7 @@
 #include"LinkedList.h"
 using namespace std;
 
-char DataBaseLoc[] = "DataBase.txt";
+char DataBaseLoc[] = "DataBase.dat";
 //char SalesMgrDB[] = "SalesMgr.dat";
 //char ProgrammerDB[] = "Programmer.dat";
 //char AdminDB[] = "Admin.dat";
@@ -168,7 +168,7 @@ bool insertRecord(int classType)
 		double costPerHrs;
 		cout << "Enter Employee Extra hours done::";
 		cin >> extraHrs;
-		cout << "Enter Employee cost per hours";
+		cout << "Enter Employee cost per hours::";
 		cin >> costPerHrs;
 		temp = new Programmer(empid.c_str(), basic, empname.c_str(), empaddr.c_str(), extraHrs, costPerHrs);
 	}
@@ -177,7 +177,7 @@ bool insertRecord(int classType)
 		int sales;
 		cout << "Enter commsion to be recieved::";
 		cin >> commision;
-		cout << "Enter sales done";
+		cout << "Enter sales done::";
 		cin >> sales;
 		temp = new SalesMgr(empid.c_str(), basic, empname.c_str(), empaddr.c_str(), sales, commision);
 	}
