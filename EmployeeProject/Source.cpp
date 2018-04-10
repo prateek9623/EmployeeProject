@@ -2,10 +2,11 @@
 #include"LinkedList.h"
 using namespace std;
 
-char SalesMgrDB[] = "SalesMgr.dat";
-char ProgrammerDB[] = "Programmer.dat";
-char AdminDB[] = "Admin.dat";
-char EmpCountDB[] = "EmpCount.txt";
+char DataBaseLoc[] = "DataBase.txt";
+//char SalesMgrDB[] = "SalesMgr.dat";
+//char ProgrammerDB[] = "Programmer.dat";
+//char AdminDB[] = "Admin.dat";
+//char EmpCountDB[] = "EmpCount.txt";
 LinkedList <Employee*> emp;
 fstream fileIO1;
 fstream fileIO2;
@@ -14,11 +15,11 @@ fstream fileIO3;
 void getFileData();
 void setFileData();
 bool insertRecord(int);
-bool deleteRecord(char[]);
-bool searchRecord(char[]);
+bool deleteRecord(const char[]);
+bool searchRecord(const char[], int&);
 void displayAll();
 void display(int);
-bool update(char[]);
+bool update(const char[]);
 void sortDatabyId();
 void sortDatabyName();
 void sortDatabyType();
@@ -29,10 +30,12 @@ int main()
 	getFileData();
 	int ch;
 	int type;
+	int recordIndex = 0;
+	string empid;
 	do
 	{
-		//empListDeleter();
-		cout << endl << "---------- - MENU------------\n" << endl;
+		system("cls");
+		cout << endl << "-----------MENU------------\n" << endl;
 		cout << "1.	Insert Record (Admin / Programmer / SalesMgr)" << endl;
 		cout << "2.	Delete Record" << endl;
 		cout << "3.	Search Employee" << endl;
@@ -45,6 +48,7 @@ int main()
 		cout << "10.	To Exit" << endl;
 		cout << "Enter your choice: " << endl;
 		cin >> ch;
+		cin.ignore(1);
 		cout << endl;
 		switch (ch)
 		{
@@ -56,61 +60,76 @@ int main()
 			}
 			else {
 				insertRecord(type);
-				cout << "Record updated";
+				cout << "Record Inserted";
 			}
+			_getch();
 			break;
 		case 2:
-			char empid[10];
 			cout << "Enter employee id::";
-			cin >> empid;
-			if (deleteRecord(empid))
+			getline(cin, empid);
+			if (deleteRecord(empid.c_str()))
 				cout << "Record deleted";
 			else
 				cout << "Record not found";
+			_getch();
 			break;
 		case 3:
 			//char empid[10];
 			cout << "Enter employee id::";
-			cin >> empid;
-			if (!searchRecord(empid)) {
+			getline(cin, empid);
+			if (!searchRecord(empid.c_str(),recordIndex)) {
 				cout << "Record not found";
 			}
 			else {
-				cout << "Record found";
+				cout << "Record found"<<endl;
+				emp[recordIndex]->display();
 			}
+			_getch();
 			break;
 		case 4:
 			displayAll();
+			_getch();
 			break;
 		case 5:
 			cout << "Enter 1.Admin, 2.Programmer, 3. SalesMgr";
 			cin >> type;
 			display(type);
+			_getch();
 			break;
 		case 6:
 			cout << "Enter Employee id to update::";
-			cin >> empid;
-			if (searchRecord(empid)) {
-				if (update(empid))
+			getline(cin, empid);
+			if (searchRecord(empid.c_str(), recordIndex)) {
+				if (update(empid.c_str()))
+				{	
 					cout << "Record Updated";
-				else
+					emp[recordIndex]->display();
+				}
+			else
 					cout << "Something went wrong!!";
 			}
 			else
 				cout << "Record not Found";
+			_getch();
 			break;
 		case 7:
-			cout << "Sorting data by id" << endl;
+			cout << "Sorting data by id" << endl << endl;
 			sortDatabyId();
 			cout << "sorting done";
+			displayAll();
+			_getch();
 			break;
 		case 8:
-			cout << "Sorting by Name" << endl;
+			cout << "Sorting by Name" << endl << endl;
 			sortDatabyName();
+			displayAll();
+			_getch();
 			break;
 		case 9:
-			cout << "Sorting by Type" << endl;
+			cout << "Sorting by Type" << endl << endl;
 			sortDatabyType();
+			displayAll();
+			_getch();
 			break;
 		case 10:
 			setFileData();
@@ -126,21 +145,23 @@ int main()
 bool insertRecord(int classType)
 {
 	Employee *temp;
-	char empid[10], empname[20], empaddr[50];
+	string empid, empname, empaddr;
 	int basic;
+	cin.ignore(1);
 	cout << "Enter Employee id::";
-	cin >> empid;
+	getline(cin, empid);
 	cout << "Enter Employee name::";
-	cin >> empname;
+	getline(cin, empname);
 	cout << "Enter Employee basic salary::";
 	cin >> basic;
+	cin.ignore(1);
 	cout << "Enter Employee address::";
-	cin >> empaddr;
+	getline(cin, empaddr);
 	if (classType == 1) {
 		int empIncentive;
 		cout << "Enter Employee Incentive::";
 		cin >> empIncentive;
-		temp = new Admin(empid, basic, empname, empaddr, empIncentive);
+		temp = new Admin(empid.c_str(), basic, empname.c_str(), empaddr.c_str(), empIncentive);
 	}
 	else if (classType == 2) {
 		int extraHrs;
@@ -149,7 +170,7 @@ bool insertRecord(int classType)
 		cin >> extraHrs;
 		cout << "Enter Employee cost per hours";
 		cin >> costPerHrs;
-		temp = new Programmer(empid, basic, empname, empaddr, extraHrs, costPerHrs);
+		temp = new Programmer(empid.c_str(), basic, empname.c_str(), empaddr.c_str(), extraHrs, costPerHrs);
 	}
 	else if (classType == 3) {
 		double commision;
@@ -158,15 +179,14 @@ bool insertRecord(int classType)
 		cin >> commision;
 		cout << "Enter sales done";
 		cin >> sales;
-		temp = new SalesMgr(empid, basic, empname, empaddr, sales, commision);
+		temp = new SalesMgr(empid.c_str(), basic, empname.c_str(), empaddr.c_str(), sales, commision);
 	}
 	else
 		return false;
 	emp.insert(temp);
-	//file.open(fileloc, ios::binary);
 	return true;
 }
-bool deleteRecord(char empid[]) {
+bool deleteRecord(const char empid[]) {
 	for (int i = 0; i < emp.getSize(); i++) {
 		if (strcmp(emp[i]->getId(), empid) == 0) {
 			return emp.remove(i);;
@@ -174,9 +194,10 @@ bool deleteRecord(char empid[]) {
 	}
 	return false;
 }
-bool searchRecord(char empid[]) {
+bool searchRecord(const char empid[], int &index) {
 	for (int i = 0; i < emp.getSize(); i++) {
 		if (strcmp(emp[i]->getId(), empid) == 0) {
+			index = i;
 			return true;
 		}
 	}
@@ -195,7 +216,7 @@ void display(int type)
 		cout << endl;
 	}
 }
-bool update(char empid[])
+bool update(const char empid[])
 {
 	for (int i = 0; i < emp.getSize(); i++) {
 		if (strcmp(emp[i]->getId(), empid) == 0)
@@ -330,87 +351,41 @@ void empListDeleter()
 //}
 void setFileData()
 {
-	int salesMgrCount = 0;
-	int programmerCount = 0;
-	int adminCount = 0;
-	remove(ProgrammerDB);
-	remove(SalesMgrDB);
-	remove(AdminDB);
-	for (int i = 0; i <emp.getSize(); i++)
+	remove(DataBaseLoc);
+	ofstream fileOut;
+	fileOut.open(DataBaseLoc);
+	for (int i = 0; i < emp.getSize(); i++)
 	{
-		if (typeid(*emp[i]) == typeid(Programmer))
-		{
-			fileIO1.open(ProgrammerDB, ios::out | ios::app);
-			emp[i]->writeToFile(fileIO1);
-			fileIO1.close();
-			programmerCount++;
-		}
-		else if (typeid(*emp[i]) == typeid(Admin))
-		{
-			fileIO2.open(AdminDB, ios::out | ios::app);
-			emp[i]->writeToFile(fileIO2);
-			fileIO2.close();
-			adminCount++;
-		}
-		else if (typeid(*emp[i]) == typeid(SalesMgr))
-		{
-			fileIO3.open(SalesMgrDB, ios::out | ios::app);
-			emp[i]->writeToFile(fileIO3);
-			fileIO3.close();
-			salesMgrCount++;
-		}
+		emp[i]->writeToFile(fileOut);
 	}
-	ofstream fileIO4;
-	fileIO4.open(EmpCountDB);
-	fileIO4 << salesMgrCount <<endl<< programmerCount << endl << adminCount;
-	fileIO4.close();
+	fileOut.close();
 }
 void getFileData()
 {
-	int salesMgrCount = 0;
-	int programmerCount = 0;
-	int adminCount = 0;
-	ifstream fileIO4;
-	fileIO4.open(EmpCountDB);
-	fileIO4 >> salesMgrCount >>programmerCount >>adminCount;
-	fileIO4.close();
-	fileIO1.open(SalesMgrDB, ios::in);
-	if (fileIO1.is_open())
+	ifstream fileIn;
+	fileIn.open(DataBaseLoc, ios::in);
+	if (fileIn.is_open())
 	{
-		Employee *temp = new SalesMgr;
-		int count = 0;
-		while (!fileIO1.eof()&&count<salesMgrCount)
+		while (!fileIn.eof())
 		{
-			temp->readFromFile(fileIO1);
-			emp.insert(temp);
-			count++;
+			string tag;
+			getline(fileIn, tag);
+			if (tag.compare("<Programmer>") == 0) {
+				Employee *temp = new Programmer;
+				temp->readFromFile(fileIn);
+				emp.insert(temp);
+			}
+			else if (tag.compare("<Admin>") == 0) {
+				Employee *temp = new Admin;
+				temp->readFromFile(fileIn);
+				emp.insert(temp);
+			}
+			else if (tag.compare("<SalesMgr>") == 0) {
+				Employee *temp = new SalesMgr;
+				temp->readFromFile(fileIn);
+				emp.insert(temp);
+			}
 		}
-		fileIO1.close();
 	}
-	fileIO2.open(ProgrammerDB, ios::in);
-	if (fileIO2.is_open())
-	{
-		Employee *temp = new Programmer;
-		int count = 0;
-		while (!fileIO2.eof() && count < programmerCount)
-		{
-			temp->readFromFile(fileIO2);
-			emp.insert(temp);
-			count++;
-		}
-		fileIO2.close();
-	}
-	fileIO3.open(AdminDB, ios::in);
-	if (fileIO3.is_open())
-	{
-		Employee *temp = new Admin;
-		int count = 0;
-		while (!fileIO3.eof()&& count < adminCount)
-		{
-			temp->readFromFile(fileIO3);
-			emp.insert(temp);
-			count++;
-		}
-		fileIO3.close();
-	}
+	fileIn.close();
 }
