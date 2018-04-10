@@ -45,6 +45,7 @@ void Programmer::display()
 	Employee::display();
 	cout << "Extra hrs done: " << getExHrs() << endl;
 	cout << "Salary: " << calSal()<<endl;
+	cout << "Position::" << "Programmer" << endl;
 }
 
 double Programmer::calSal()
@@ -54,6 +55,7 @@ double Programmer::calSal()
 
 bool Programmer::writeToFile(ostream &out)
 {
+	out << "<Programmer>" << endl;
 	if (Employee::writeToFile(out))
 	{
 		try {

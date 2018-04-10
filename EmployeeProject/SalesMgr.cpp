@@ -35,7 +35,8 @@ void SalesMgr::display()
 	Employee::display();
 	cout << "Target:: " << mTarget<<endl;
 	cout << "Salesdone::" << mSales<<endl;
-	cout << "Salary::" << calSal();
+	cout << "Salary::" << calSal() << endl;
+	cout<<"Position::"<<"Sales Manager"<<endl;
 }
 
 double SalesMgr::calSal()
@@ -57,6 +58,7 @@ void SalesMgr::update()
 
 bool SalesMgr::writeToFile(ostream &out)
 {
+	out << "<SalesMgr>" << endl;
 	if (Employee::writeToFile(out))
 	{
 		try {

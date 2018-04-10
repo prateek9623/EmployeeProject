@@ -27,6 +27,7 @@ void Admin::display()
 {
 	Employee::display();
 	cout << "Salary: " << calSal() << endl;
+	cout << "Position::" << "Administrator" << endl;
 }
 
 double Admin::calSal() 
@@ -36,6 +37,7 @@ double Admin::calSal()
 
 bool Admin::writeToFile(ostream &out)
 {
+	out << "<Admin>" << endl;
 	if (Employee::writeToFile(out))
 	{
 		try {

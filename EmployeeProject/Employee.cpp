@@ -54,12 +54,12 @@ void Employee::display()
 void Employee::update()
 {
 	double basic;
-	char empaddr[50];
+	string empaddr;
 	cout << "Enter Employee basic salary::";
 	cin >> basic;
 	cout << "Enter Employee address::";
-	cin >> empaddr;
-	setAddr(empaddr);
+	getline(cin,empaddr);
+	setAddr(empaddr.c_str());
 	setBasic(basic);
 }
 
