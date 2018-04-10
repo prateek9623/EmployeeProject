@@ -28,17 +28,7 @@ public:
 	bool virtual writeToFile(ostream&)=0;
 	bool virtual readFromFile(istream&) = 0;
 
-	/*void virtual setincentive(double) {};
-	double virtual getincentive() { return 0.0; }
-	int virtual  getexhrs() { return 0; }
-	double virtual getcostperhrs() { return 0.0; }
-	double virtual getcommision() { return 0.0; }
-	int virtual getsales() { return 0; }
-	void virtual setexhrs(int) {};
-	void virtual setcostperhrs(double) {};
-	void virtual setcommision(double) {};
-	void virtual setsales(int) {};
-*/
+	
 
 	~Employee();
 

@@ -55,6 +55,41 @@ void SalesMgr::update()
 	setSales(sales);
 }
 
+bool SalesMgr::writeToFile(ostream &out)
+{
+	if (Employee::writeToFile(out))
+	{
+		try {
+			out << mTarget << endl;
+			out << mCommision << endl;
+			out << mSales << endl;
+			return true;
+		}
+		catch (ostream::failure e) {
+			return false;
+		}
+	}
+	return false;
+
+}
+
+bool SalesMgr::readFromFile(istream &in)
+{
+	if (Employee::readFromFile(in)) {
+		try {
+			in >> mTarget;
+			in >> mCommision;
+			in >> mSales;
+			return true;
+		}
+		catch (ostream::failure e) {
+			return false;
+		}
+	}
+	return false;
+}
+
+
 SalesMgr::~SalesMgr()
 {
 }

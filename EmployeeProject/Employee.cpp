@@ -80,7 +80,10 @@ bool Employee::writeToFile(ostream &out)
 bool Employee::readFromFile(istream &in)
 {
 	try {
-		getline(in, mEid);.
+		getline(in, mEid);
+		getline(in, mName);
+		getline(in, mAddress);
+		in >> mBasic;
 		return true;
 	}
 	catch (ostream::failure e) {

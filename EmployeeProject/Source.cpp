@@ -11,10 +11,8 @@ fstream fileIO1;
 fstream fileIO2;
 fstream fileIO3;
 
-
-
-//void getFileData();
-//void setFileData();
+void getFileData();
+void setFileData();
 bool insertRecord(int);
 bool deleteRecord(char[]);
 bool searchRecord(char[]);
@@ -28,7 +26,7 @@ void empListDeleter();
 
 int main()
 {
-	//getFileData();
+	getFileData();
 	int ch;
 	int type;
 	do
@@ -115,7 +113,7 @@ int main()
 			sortDatabyType();
 			break;
 		case 10:
-			//setFileData();
+			setFileData();
 			break;
 		default:
 			cout << "Invalid Choice!!!";
@@ -124,6 +122,7 @@ int main()
 	} while (ch != 10);
 
 }
+
 bool insertRecord(int classType)
 {
 	Employee *temp;
@@ -241,7 +240,7 @@ void empListDeleter()
 {
 	emp.deleteList();
 }
-//
+//NOT WORKING NEED TO CHECK WITH VINAYAK SIR
 //void getFileData()
 //{
 //	int salesMgrCount = 0;
@@ -329,3 +328,89 @@ void empListDeleter()
 //	fileIO4 << salesMgrCount <<endl<< programmerCount << endl << adminCount;
 //	fileIO4.close();
 //}
+void setFileData()
+{
+	int salesMgrCount = 0;
+	int programmerCount = 0;
+	int adminCount = 0;
+	remove(ProgrammerDB);
+	remove(SalesMgrDB);
+	remove(AdminDB);
+	for (int i = 0; i <emp.getSize(); i++)
+	{
+		if (typeid(*emp[i]) == typeid(Programmer))
+		{
+			fileIO1.open(ProgrammerDB, ios::out | ios::app);
+			emp[i]->writeToFile(fileIO1);
+			fileIO1.close();
+			programmerCount++;
+		}
+		else if (typeid(*emp[i]) == typeid(Admin))
+		{
+			fileIO2.open(AdminDB, ios::out | ios::app);
+			emp[i]->writeToFile(fileIO2);
+			fileIO2.close();
+			adminCount++;
+		}
+		else if (typeid(*emp[i]) == typeid(SalesMgr))
+		{
+			fileIO3.open(SalesMgrDB, ios::out | ios::app);
+			emp[i]->writeToFile(fileIO3);
+			fileIO3.close();
+			salesMgrCount++;
+		}
+	}
+	ofstream fileIO4;
+	fileIO4.open(EmpCountDB);
+	fileIO4 << salesMgrCount <<endl<< programmerCount << endl << adminCount;
+	fileIO4.close();
+}
+void getFileData()
+{
+	int salesMgrCount = 0;
+	int programmerCount = 0;
+	int adminCount = 0;
+	ifstream fileIO4;
+	fileIO4.open(EmpCountDB);
+	fileIO4 >> salesMgrCount >>programmerCount >>adminCount;
+	fileIO4.close();
+	fileIO1.open(SalesMgrDB, ios::in);
+	if (fileIO1.is_open())
+	{
+		Employee *temp = new SalesMgr;
+		int count = 0;
+		while (!fileIO1.eof()&&count<salesMgrCount)
+		{
+			temp->readFromFile(fileIO1);
+			emp.insert(temp);
+			count++;
+		}
+		fileIO1.close();
+	}
+	fileIO2.open(ProgrammerDB, ios::in);
+	if (fileIO2.is_open())
+	{
+		Employee *temp = new Programmer;
+		int count = 0;
+		while (!fileIO2.eof() && count < programmerCount)
+		{
+			temp->readFromFile(fileIO2);
+			emp.insert(temp);
+			count++;
+		}
+		fileIO2.close();
+	}
+	fileIO3.open(AdminDB, ios::in);
+	if (fileIO3.is_open())
+	{
+		Employee *temp = new Admin;
+		int count = 0;
+		while (!fileIO3.eof()&& count < adminCount)
+		{
+			temp->readFromFile(fileIO3);
+			emp.insert(temp);
+			count++;
+		}
+		fileIO3.close();
+	}
+}

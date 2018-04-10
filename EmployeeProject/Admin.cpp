@@ -34,6 +34,36 @@ double Admin::calSal()
 	return getBasic() + mIncentive;
 }
 
+bool Admin::writeToFile(ostream &out)
+{
+	if (Employee::writeToFile(out))
+	{
+		try {
+			out << mIncentive << endl;
+			return true;
+		}
+		catch (ostream::failure e) {
+			return false;
+		}
+	}
+	return false;
+
+}
+
+bool Admin::readFromFile(istream &in)
+{
+	if (Employee::readFromFile(in)) {
+		try {
+			in >> mIncentive;
+			return true;
+		}
+		catch (ostream::failure e) {
+			return false;
+		}
+	}
+	return false;
+}
+
 Admin::~Admin()
 {
 }

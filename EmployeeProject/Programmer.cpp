@@ -52,42 +52,37 @@ double Programmer::calSal()
 	return getBasic()+mExtraHrs*mCostPerHrs;
 }
 
-//bool Programmer::writeToFile(ostream& out)
-//{
-//	try{
-//		out << getId() << endl;
-//		out << getName() << endl;
-//		out << getBasic() << endl;
-//		out << getAddr() << endl;
-//		out << mCostPerHrs << endl;
-//		out << mExtraHrs << endl;
-//		return true;
-//	}
-//	catch (ifstream::failure e) {
-//		return false;
-//	}
-//
-//}
-//
-//bool Programmer::readFromFile(istream &in)
-//{
-//	try {
-//		string mEid;
-//		double mBasic;
-//		string mName;
-//		string mAddress;
-//		in >> mEid >> mBasic >> mName >> mAddress>>mCostPerHrs>>mExtraHrs;
-//		setId(mEid);
-//		setBasic(mBasic);
-//		setName(mName.c_str());
-//		setAddr(mAddress.c_str());
-//		return true;
-//	} catch (ifstream::failure e) {
-//		return false;
-//	}
-//}
-//
+bool Programmer::writeToFile(ostream &out)
+{
+	if (Employee::writeToFile(out))
+	{
+		try {
+			out << mExtraHrs << endl;
+			out << mCostPerHrs << endl;
+			return true;
+		}
+		catch (ostream::failure e) {
+			return false;
+		}
+	}
+	return false;
 
+}
+
+bool Programmer::readFromFile(istream &in)
+{
+	if (Employee::readFromFile(in)) {
+		try {
+			in >> mExtraHrs;
+			in >> mCostPerHrs;
+			return true;
+		}
+		catch (ostream::failure e) {
+			return false;
+		}
+	}
+	return false;
+}
 
 Programmer::~Programmer()
 {
